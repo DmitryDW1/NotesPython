@@ -1,71 +1,29 @@
-'''
-Задача №49. Общее обсуждение
-Создать телефонный справочник с
-возможностью импорта и экспорта данных в
-формате .txt. Фамилия, имя, отчество, номер
-телефона - данные, которые должны находиться
-в файле.
-1. Программа должна выводить данные
-2. Программа должна сохранять данные в
-текстовом файле
-3. Пользователь может ввести одну из
-характеристик для поиска определенной
-записи(Например имя или фамилию
-человека)
-4. Использование функций. Ваша программа
-не должна быть линейной
-'''
 
 from os import path
 import pandas as pd
+import csv
+import datetime
 
-file_base = 'base.txt'
+file_base = 'notes.csv'
 temp_file_base = 'temp_file_base.txt'
 file_log_csv = 'log.csv'
 file_test_export = 'test.txt'
 all_data = []
 last_id = 0
-
 if not path.exists(file_base):
     with open(file_base, "w", encoding="utf-8") as _:
+        
+        str = 'ID;Заголовок;Текст;Дата создания(изменения)'
+        _.write(str +"\n")
         pass
 
-def read_records(): # Не работает last_id:( Как допилить??? Решено!
-    global all_data, last_id
 
-    with open(file_base, encoding="utf-8") as f:
-        all_data = [i.strip() for i in f]
-        if all_data:
-            last_id = int(all_data[-1].split()[0])
-            return all_data
-        return []
 
-def show_all():
-    if all_data:
-        print(*all_data, sep="\n")
-    else:
-        print("Empty base!\n")
+def name_note():
+    return input('Введите заголовок заметки: ')
 
-def family_user():
-    return input('Введите Фамилию: ')
-
-def first_name_user():
-    return input('Введите Имя: ')
-
-def last_name_user():
-    return input('Введите отчество: ')
-
-def phone_number_user():
-    return input('Введите номер телефона: ')
-
-def add_records():
-    global last_id
-    with open(file_base, 'a', encoding="utf-8") as f:
-        last_id += 1
-        new_user = (f'{last_id} {family_user()} {first_name_user()} '
-                    f'{last_name_user()} {phone_number_user()}\n')
-        f.write(new_user)
-
+def text_note():
+    return input('Введите текст: ')
 def search_records():
     with open(file_base, 'r', encoding="utf-8") as f:
         answer_search = input('Поиск:\n'
@@ -142,51 +100,3 @@ def delete_records():
         lines2 = f2.readlines()
         for line in lines2:
             f1.write(line)
-
-def import_export_records():
-    answer_search = input('Импорт/Экспорт данных:\n'
-                              '1. Импорт\n'
-                              '2. Экспорт\n')
-    match answer_search:
-        case '1':
-            df = pd.read_table(file_base)
-            df.to_csv(file_log_csv)
-        case '2':
-            csv = pd.read_csv(file_log_csv)
-            csv.to_string(file_test_export)
-        case _:
-            print("Try again!\n")
-
-def main_menu():
-    work = True
-    while work:
-        read_records()
-        answer = input("Phone book:\n"
-                       "1. Show all\n"
-                       "2. Add\n"
-                       "3. Search\n"
-                       "4. Change\n"
-                       "5. Delete\n"
-                       "6. Exp/Imp\n"
-                       "7. Exit\n")
-        match answer:
-            case "1":
-                show_all()
-            case "2":
-                add_records()
-            case "3":
-                search_records()
-            case "4":
-                change_records()
-            case "5":
-                delete_records()
-            case "6":
-                import_export_records()
-            case "7":
-                work = False
-            case _:
-                print("Try again!\n")
-
-
-main_menu()
-
