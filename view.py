@@ -1,6 +1,6 @@
 
-from model.notesPython import *
-from controller.rwNotes import *
+from notesPython import *
+from rwNotes import *
 userValue = []
 class Run(object):
     def main_menu():
@@ -39,15 +39,15 @@ class Run(object):
                 case "4":
                     def change_menu():
                         answer_change = input('Замена:\n'
-                                    '1. Индекс\n'
-                                    '2. Заголовок\n')
+                                    '1. Заголовок\n'
+                                    '2. \n')
                         match answer_change:
                             case '1':
-                                    change_index = 0
-                                    userValue = input("Введите индекс: ")
+                                    change_index = 1
+                                    userValue = input("Введите заголовок: ")
                                     SearchNotes.change_records(userValue, change_index, name_note())
                             case '2':
-                                    change_index = 1
+                                    change_index = 2
                                     userValue = input("Введите заголовок (целиком или одно слово): \n")
                                     SearchNotes.change_records(userValue, change_index, text_note())
                             case _:

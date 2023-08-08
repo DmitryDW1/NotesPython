@@ -1,4 +1,4 @@
-from model.notesPython import *
+from notesPython import *
 
 class ShowNotes(object):
     def show_all_records():
@@ -65,9 +65,26 @@ class SearchNotes(object):
                         if userValue in row[change_index]:
                             old_data = row[change_index]
                             new_data = old_data.replace(userValue, changes_in_note)
-                            rows2.writerow(new_data)
+                            for column in row:
+                                if column != userValue:
+                                    
+                                    rows2.writerows(column)
+                                else:
+                                    rows2.writerow(new_data)
                         else: rows2.writerow(row)
-        with open(file_base, 'w', encoding="utf-8") as f1, open(temp_file_base, 'r', encoding="utf-8") as f2:
-            rows2 = csv.reader(f2, delimiter=";")
-            for row in rows2:
-                rows1.writerow(row)
+                # case '2':
+                #     lines1 = f1.readlines()
+                #     change_phone_number_user = phone_number_user()
+                #     for line in lines1:
+                #         if change_phone_number_user in line:
+                #             old_data = line
+                #             new_data = old_data.replace(change_phone_number_user, phone_number_user())
+                #             f2.write(new_data)
+                #         else: f2.write(line)
+                # case _:
+                #     print("Try again!\n")
+        # with open(file_base, 'w', encoding="utf-8") as f1, open(temp_file_base, 'r', encoding="utf-8") as f2:
+        #     rows2 = csv.reader(f2, delimiter=";")
+        #     rows1 = csv.writer(f1, delimiter = ";", lineterminator="\r")
+        #     for row in rows2:
+        #         rows1.writerow(row)
