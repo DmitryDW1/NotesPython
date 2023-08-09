@@ -61,30 +61,18 @@ class SearchNotes(object):
         with open(file_base, 'r+', encoding="utf-8") as f1, open(temp_file_base, 'w', encoding="utf-8") as f2:
                     rows1 = csv.reader(f1, delimiter=";")
                     rows2 = csv.writer(f2, delimiter = ";", lineterminator="\r")
+                    flag = True
                     for row in rows1:
                         if userValue in row[change_index]:
-                            old_data = row[change_index]
-                            new_data = old_data.replace(userValue, changes_in_note)
-                            for column in row:
-                                if column != userValue:
-                                    
-                                    rows2.writerows(column)
-                                else:
-                                    rows2.writerow(new_data)
-                        else: rows2.writerow(row)
-                # case '2':
-                #     lines1 = f1.readlines()
-                #     change_phone_number_user = phone_number_user()
-                #     for line in lines1:
-                #         if change_phone_number_user in line:
-                #             old_data = line
-                #             new_data = old_data.replace(change_phone_number_user, phone_number_user())
-                #             f2.write(new_data)
-                #         else: f2.write(line)
-                # case _:
-                #     print("Try again!\n")
-        # with open(file_base, 'w', encoding="utf-8") as f1, open(temp_file_base, 'r', encoding="utf-8") as f2:
-        #     rows2 = csv.reader(f2, delimiter=";")
-        #     rows1 = csv.writer(f1, delimiter = ";", lineterminator="\r")
-        #     for row in rows2:
-        #         rows1.writerow(row)
+                            row[change_index] = changes_in_note
+                            flag = False
+                        rows2.writerow(row)
+                    if (flag):
+                        print("Такой заметки не найдено\n")
+                    else:
+                        print("Заметка изменена\n")
+        with open(file_base, 'w', encoding="utf-8") as f1, open(temp_file_base, 'r', encoding="utf-8") as f2:
+            rows2 = csv.reader(f2, delimiter=";")
+            rows1 = csv.writer(f1, delimiter = ";", lineterminator="\r")
+            for row in rows2:
+                rows1.writerow(row)
