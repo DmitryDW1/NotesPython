@@ -7,6 +7,4 @@ class Note:
         return input('Введите текст: ')
 
     def to_string(row):
-            print(f'{row[0]} {row[1]} {row[2]} {row[3]}' + '\n')
-  
-
+        print(f'{row[0]} {row[1]} {row[2]} {row[3]}' + '\n')
