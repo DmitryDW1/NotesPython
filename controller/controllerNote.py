@@ -1,7 +1,7 @@
 import csv
 import datetime
 import os
-from model.model import *
+from model.model import Note
 
 file_base = 'notes.csv'
 temp_file_base = 'temp_file_base.csv'
@@ -19,7 +19,7 @@ class ShowNotes(object):
         with open(file_base, encoding="utf-8") as f:
             file_reader = csv.reader(f, delimiter=";") 
             for row in file_reader:
-                to_string(row)
+                Note.to_string(row)
                 last_id = int(row[0])
                 count +=1
             return count, last_id
@@ -41,7 +41,7 @@ class WriterNotes(object):
         with open(file_base, 'a', encoding="utf-8") as f:
             file_writer = csv.writer(f, delimiter = ";", lineterminator="\r")
             last_id += 1
-            file_writer.writerow([last_id, name_note(), text_note(), datetime.datetime.today().strftime("%d/%m/%Y, %H:%M:%S")])
+            file_writer.writerow([last_id, Note.name_note(), Note.text_note(), datetime.datetime.today().strftime("%d/%m/%Y, %H:%M:%S")])
             return last_id
     
     def delete_records(userValue, del_index):                                
@@ -85,12 +85,12 @@ class SearchNotes(object):
                 for row in file_reader:
                     if userValue == row[search_index]:
                         search_flag = False
-                        to_string(row)
+                        Note.to_string(row)
             else:
                 for row in file_reader:
                     if userValue in row[search_index]:
                         search_flag = False
-                        to_string(row)
+                        Note.to_string(row)
             return search_flag
 
    
