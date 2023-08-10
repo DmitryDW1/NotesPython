@@ -1,18 +1,29 @@
-from notesPython import *
+import csv
+import datetime
+import os
+from model.model import *
+
+file_base = 'notes.csv'
+temp_file_base = 'temp_file_base.csv'
+file_log_csv = 'log.csv'
+last_id = 0
+
+if not os.path.exists(file_base):
+    with open(file_base, "w", encoding="utf-8") as _:
+        pass
 
 class ShowNotes(object):
     def show_all_records():
         global last_id
+        count = 0
         with open(file_base, encoding="utf-8") as f:
-            file_reader = csv.reader(f, delimiter=";")
-            count = 0 
+            file_reader = csv.reader(f, delimiter=";") 
             for row in file_reader:
-                print(f'{row[0]} {row[1]} {row[2]} {row[3]}' + '\n')
+                to_string(row)
                 last_id = int(row[0])
                 count +=1
-            print(f'Всего в файле {count} заметок.')
-            return last_id
-        
+            return count, last_id
+
     def read_records():
         global last_id
         with open(file_base) as f:
@@ -45,18 +56,6 @@ class WriterNotes(object):
             rows1 = csv.writer(f1, delimiter = ";", lineterminator="\r")
             for row in rows2:
                 rows1.writerow(row)
-class SearchNotes(object):
-    def search_records(userValue, search_index):
-        with open(file_base, 'r', encoding="utf-8") as f:
-            bool = True
-            file_reader = csv.reader(f, delimiter=";")
-            for row in file_reader:
-                if userValue in row[search_index]:
-                    bool = False
-                    print('\n' + f'{row[0]} {row[1]} {row[2]} {row[3]}' + '\n')
-            if bool:
-                print("\nЗаметок не найдено\n")
-
     def change_records(userValue, change_index, changes_in_note):
         with open(file_base, 'r+', encoding="utf-8") as f1, open(temp_file_base, 'w', encoding="utf-8") as f2:
                     rows1 = csv.reader(f1, delimiter=";")
@@ -65,6 +64,7 @@ class SearchNotes(object):
                     for row in rows1:
                         if userValue in row[change_index]:
                             row[change_index] = changes_in_note
+                            row[3] = datetime.datetime.today().strftime("%d/%m/%Y, %H:%M:%S")
                             flag = False
                         rows2.writerow(row)
                     if (flag):
@@ -76,3 +76,21 @@ class SearchNotes(object):
             rows1 = csv.writer(f1, delimiter = ";", lineterminator="\r")
             for row in rows2:
                 rows1.writerow(row)
+                
+class SearchNotes(object):
+    def search_records(userValue, search_index, search_flag):
+        with open(file_base, 'r', encoding="utf-8") as f:
+            file_reader = csv.reader(f, delimiter=";")
+            if userValue.isdigit():
+                for row in file_reader:
+                    if userValue == row[search_index]:
+                        search_flag = False
+                        to_string(row)
+            else:
+                for row in file_reader:
+                    if userValue in row[search_index]:
+                        search_flag = False
+                        to_string(row)
+            return search_flag
+
+   
