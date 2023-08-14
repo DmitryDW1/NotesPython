@@ -64,12 +64,12 @@ class Run:
             case '2':
                 search_index = 1
                 userValue = input("Введите заголовок (целиком или одно слово):\n").lower()
-                if search_flag == SearchNotes.search_records(userValue, search_index, search_flag):
+                if search_flag == WriterNotes.delete_records(userValue, search_index, search_flag):
                     print("\nЗаметок с заголовком " + userValue + " не найдено")
             case '3':
                 search_index = 2
                 userValue = input("Введите текст (целиком или одно слово):\n").lower()
-                if search_flag == SearchNotes.search_records(userValue, search_index, search_flag):
+                if search_flag == WriterNotes.delete_records(userValue, search_index, search_flag):
                     print("\nЗаметок с текстом " + userValue + " не найдено")
             case _:
                 print("\nПовторите ввод параметра удаления заметки!\n")

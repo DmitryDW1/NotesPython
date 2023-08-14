@@ -66,7 +66,7 @@ class WriterNotes(object):
             rows1 = csv.reader(f1, delimiter=";")
             rows2 = csv.writer(f2, delimiter=";", lineterminator="\r")
             for row in rows1:
-                if userValue not in row[del_index]:
+                if userValue not in row[del_index].lower():
                     rows2.writerow(row)
                     search_flag = False
                 
